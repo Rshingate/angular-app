@@ -1,0 +1,109 @@
+<div class="row">
+        <div class="col-xs-12" >
+        <div class="lds-roller" *ngIf="loading">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>    
+    <div class="col-xs-12" >
+        <form *ngIf="recipeForm"  (ngSubmit) = "onSubmit();"  [formGroup]="recipeForm">
+               
+            <div class="row">
+                <div class="col-xs-12">
+                    <button [disabled]="!recipeForm.valid" class="btn btn-success" type="submit" >Save</button>
+                    <button class="btn btn-danger" type="button" (click) = "onCancel();">Cancel</button>
+                </div>
+            </div>  
+            <hr>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="name">Recipe Name:</label>
+                        <input type="text" class="form-control" formControlName="name">
+                    </div>
+                    <span *ngIf="!recipeForm.get('name').valid && recipeForm.get('name').touched">
+                        <span *ngIf="recipeForm.get('name').errors['required'] && recipeForm.get('name').touched" class="help-block">Name is required</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="imagePath">Image Path:</label>
+                        <input type="imagePath" class="form-control" formControlName="imagePath" #imagePath>
+                    </div>
+                    <span *ngIf="!recipeForm.get('imagePath').valid && recipeForm.get('imagePath').touched">
+                        <span *ngIf="recipeForm.get('imagePath').errors['required'] && recipeForm.get('imagePath').touched" class="help-block">Image Path is required</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <img [src]="imagePath.value" class="img-responsive">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea type="description" class="form-control" formControlName="description"></textarea>
+                    </div>
+                    <span *ngIf="!recipeForm.get('description').valid && recipeForm.get('description').touched">
+                        <span *ngIf="recipeForm.get('description').errors['required'] && recipeForm.get('description').touched" class="help-block">Description is required</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" formArrayName="ingredients">
+                  <div
+                    class="row"
+                    *ngFor="let ingredientCtrl of getControls(); let i = index"
+                    [formGroupName]="i"
+                    style="margin-top: 10px;">
+                    <div class="col-xs-8">
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="name">
+                    </div>
+                    <div class="col-xs-2">
+                      <input
+                        type="number"
+                        class="form-control"
+                        formControlName="amount">
+                    </div>
+                    <div class="col-xs-2">
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        (click)="onDeleteIngredient(i)">X</button>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button
+                        type="button"
+                        class="btn btn-success"
+                        (click)="onAddIngredient()">Add Ingredient</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </form>
+    </div>    
+</div>
+

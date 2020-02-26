@@ -1,0 +1,38 @@
+<!-- <div class="container">
+    <div class="row">
+        <app-success></app-success>
+        <app-danger></app-danger>
+    </div>
+</div> -->
+
+<!-- <div class="container">
+    <div class="row">
+        <label class="form-label">USERNAME</label>
+        <input type="text" class="form-control" [(ngModel)]="username">
+    </div>
+    <div class="row">
+        <p>{{username}}</p>
+        <button class="btn btn-info" [disabled]='resetFlag()' (click)='resetContent()'>Reset</button>
+    </div>
+</div> -->
+
+<div class="container">
+        <div class="row">
+            <button class="btn btn-info" (click) = "ShowSecretMessage()">Display Details</button>
+            <!-- <p *ngIf="showSecret">Secret Password:Loading@pw</p> -->
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div *ngFor = "let logItem of users; let i = index"
+                    [ngStyle]="{'background-color':i >= 4 ? 'red':'green','margin':'10px'}"
+                    [ngClass]="{'white-text': i >= 4}"
+                >{{logItem.emp_code}}    
+                </div>
+            </div>
+        </div>
+
+        <app-server></app-server>
+
+        
+</div>

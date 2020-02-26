@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-xs-12">
+      <h4 [ngStyle]="{'margin-bottom': '4px'}">Template Driven</h4>
+  </div>
+</div>   
+  <hr>
+      <form (ngSubmit) = 'onSubmit(f);' #f="ngForm">
+        <div id="user-data">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" class="form-control" ngModel name="username" required
+            #username = "ngModel"
+            >
+            <span *ngIf="!username.valid && submitted"  class="help-block">Please Enter username</span>
+          </div>
+          <button class="btn btn-default" type="button">Suggest an Username</button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input type="email" id="email" class="form-control" ngModel name="email" required email 
+            #email = "ngModel"
+            >
+          </div>
+          <span *ngIf="!email.valid && submitted"  class="help-block">Please Enter Email</span>
+        </div>
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+          <select id="secret" class="form-control" ngModel name="secret" required #secret = "ngModel">
+            <option value="">Select One</option>
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+          <span *ngIf="!secret.valid && submitted"  class="help-block">Please Choose One</span>
+        </div>
+
+        <div class="form-group">
+            <label for="secret_answer">Answer</label>
+            <input type="text" id="secret_answer" class="form-control" ngModel name="secret_answer" required
+            #secret_answer = "ngModel"
+            [(ngModel)] = "answer"
+            >
+            <span *ngIf="!secret_answer.valid && submitted"  class="help-block">Please Enter</span>
+          </div>
+
+          <h3>Your Answer is:{{answer}}</h3>
+          
+        <button  class="btn btn-primary" type="submit">Submit</button>
+      </form>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-xs-12">
+            <h4 [ngStyle]="{'margin-bottom': '4px'}">Reactive</h4>
+        </div>
+      </div>   
+        <hr>
+
+        <form [formGroup] = "userForm" (ngSubmit) = 'onSubmitReactive();'>
+          <div id="user-data">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" formControlName="username" class="form-control">
+            </div>
+            <span *ngIf="!userForm.get('username').valid && userForm.get('username').touched" class="help-block">
+              <span *ngIf="userForm.get('username').errors['validUsername']" class="help-block">
+                Username Already taken!!!Please choose different!!.
+              </span>
+              <span *ngIf="userForm.get('username').errors['required']" class="help-block">
+                Please Enter Username
+              </span>
+            </span>
+            <button class="btn btn-default" type="button">Suggest an Username</button>
+            <div class="form-group">
+              <label for="email">Mail</label>
+              <input type="email" id="email" formControlName="email" class="form-control">
+            </div>
+            <span *ngIf="!userForm.get('email').valid && userForm.get('email').touched">
+              <span *ngIf="userForm.get('email').errors['required']" class="help-block">
+                Please Enter Email
+              </span>
+              <span *ngIf="userForm.get('email').errors['email']" class="help-block">
+                Please Enter Valid Email
+              </span>
+            </span>
+            
+          </div>
+          <div class="form-group">
+            <label for="secret">Secret Questions</label>
+            <select id="secret" class="form-control" formControlName="secret">
+              <option value="">Select One</option>
+              <option value="pet">Your first Pet?</option>
+              <option value="teacher">Your first teacher?</option>
+            </select>
+            <span *ngIf="!userForm.get('secret').valid && userForm.get('secret').touched" class="help-block">
+              Please Choose one
+            </span>
+          </div>
+  
+          <div class="form-group">
+              <label for="secret_answer">Answer</label>
+              <input type="text" id="secret_answer" formControlName="secret_answer" class="form-control"
+              [(ngModel)] = "answer">
+          </div>
+  
+          <h3>Your Answer is:{{answer}}</h3>
+            
+          <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit">Submit</button>
+        </form>
+
+        <hr>
+
+        <h1>PIPES</h1>
+        <input class="form-control" name="queryString"  [(ngModel)]="queryString" placeholder="Search By Name,Instance Type,Provider,Status" >
+        <table class="table table-borders table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Instance Type</th>
+                    <th>Provider</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let server of servers|filterResult:queryString let i = index">
+                    <td>{{server.name}}</td>
+                    <td>{{server.instanceType}}</td>
+                    <td>{{server.provider|uppercase}}</td>
+                    <td>{{server.status}}</td>
+                    <td>{{server.price|currency: 'USD'}}</td>
+                    <td>{{server.date|date:'fullDate'|uppercase}}</td>
+                </tr>
+            </tbody>
+        </table>
